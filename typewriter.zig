@@ -65,8 +65,13 @@ pub fn main() !void {
     var latest_pressed_key: c_uint = 0;
 
     while (true) {
-        if (quitEventHasBeenTriggered()) {
-            return;
+        const optional_system_event = getEvent();
+
+        if (optional_system_event) |system_event| {
+            switch(system_event.type) {
+                c.SDL_QUIT => break,
+                else => {}
+            }
         }
 
         var event: c.XEvent = undefined;
@@ -137,14 +142,14 @@ pub fn main() !void {
     }
 }
 
-fn quitEventHasBeenTriggered() bool {
+fn getEvent() ?c.SDL_Event {
     var event: c.SDL_Event = undefined;
 
     if (c.SDL_PollEvent(&event) == 0) {
-        return false;
+        return null;
     }
 
-    return event.type == c.SDL_QUIT;
+    return event;
 }
 
 fn freeKeySounds(mix_chunks: []*c.Mix_Chunk) void {
