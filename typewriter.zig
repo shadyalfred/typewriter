@@ -29,21 +29,21 @@ pub fn main() !void {
 	}
      
     var key_sounds = [_]*c.Mix_Chunk {
-        c.Mix_LoadWAV("./sounds/key-new-01.wav"),
-        c.Mix_LoadWAV("./sounds/key-new-02.wav"),
-        c.Mix_LoadWAV("./sounds/key-new-03.wav"),
-        c.Mix_LoadWAV("./sounds/key-new-04.wav"),
-        c.Mix_LoadWAV("./sounds/key-new-05.wav"),
+        c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/key-new-01.wav"))),
+        c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/key-new-02.wav"))),
+        c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/key-new-03.wav"))),
+        c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/key-new-04.wav"))),
+        c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/key-new-05.wav"))),
     };
     defer freeKeySounds(&key_sounds);
 
-    const enter_sound = c.Mix_LoadWAV("./sounds/return-new.wav");
+    const enter_sound = c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/return-new.wav")));
     defer freeKeySound(enter_sound);
 
-    const space_sound = c.Mix_LoadWAV("./sounds/space-new.wav");
+    const space_sound = c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/space-new.wav")));
     defer freeKeySound(space_sound);
 
-    const backspace_sound = c.Mix_LoadWAV("./sounds/backspace.wav");
+    const backspace_sound = c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/backspace.wav")));
     defer freeKeySound(backspace_sound);
 
     _ = c.Mix_AllocateChannels(10);
