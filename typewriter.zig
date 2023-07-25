@@ -17,8 +17,8 @@ const Key = enum(c_uint) {
 };
 
 pub fn main() !void {
-	if(c.SDL_Init(c.SDL_INIT_AUDIO) < 0) {
-		c.SDL_Quit();
+    if (c.SDL_Init(c.SDL_INIT_AUDIO) < 0) {
+        c.SDL_Quit();
         return;
     }
     defer c.SDL_Quit();
@@ -26,9 +26,9 @@ pub fn main() !void {
     if (c.Mix_OpenAudio(44100, c.MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
         print("Couldn't initialize mix\n", .{});
         return;
-	}
-     
-    var key_sounds = [_]*c.Mix_Chunk {
+    }
+
+    var key_sounds = [_]*c.Mix_Chunk{
         c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/key-new-01.wav"))),
         c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/key-new-02.wav"))),
         c.Mix_QuickLoad_WAV(@constCast(@embedFile("./sounds/key-new-03.wav"))),
@@ -68,9 +68,9 @@ pub fn main() !void {
         const optional_system_event = getEvent();
 
         if (optional_system_event) |system_event| {
-            switch(system_event.type) {
+            switch (system_event.type) {
                 c.SDL_QUIT => break,
-                else => {}
+                else => {},
             }
         }
 
@@ -100,33 +100,17 @@ pub fn main() !void {
 
                 switch (pressed_key) {
                     @enumToInt(Key.Enter) => {
-                        _ = c.Mix_PlayChannel(
-                            -1,
-                            enter_sound,
-                            0
-                        );
+                        _ = c.Mix_PlayChannel(-1, enter_sound, 0);
                     },
                     @enumToInt(Key.Backspace) => {
-                        _ = c.Mix_PlayChannel(
-                            -1,
-                            backspace_sound,
-                            0
-                        );
+                        _ = c.Mix_PlayChannel(-1, backspace_sound, 0);
                     },
                     @enumToInt(Key.Space) => {
-                        _ = c.Mix_PlayChannel(
-                            -1,
-                            space_sound,
-                            0
-                        );
+                        _ = c.Mix_PlayChannel(-1, space_sound, 0);
                     },
                     else => {
-                        _ = c.Mix_PlayChannel(
-                            -1,
-                            key_sounds[@mod(RandGen.random().int(usize), 5)],
-                            0
-                        );
-                    }
+                        _ = c.Mix_PlayChannel(-1, key_sounds[@mod(RandGen.random().int(usize), 5)], 0);
+                    },
                 }
 
                 latest_pressed_key = pressed_key;
